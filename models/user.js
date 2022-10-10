@@ -186,6 +186,7 @@ class User {
 
     if (!user) throw new NotFoundError(`No user: ${username}`);
 
+    
     delete user.password;
     return user;
   }
