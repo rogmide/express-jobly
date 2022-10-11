@@ -20,6 +20,14 @@ class NotFoundError extends ExpressError {
   }
 }
 
+/** 401 UNAUTHORIZED ADMIN ONLY error. */
+
+class UnauthorizedAdmin extends ExpressError {
+  constructor(message = "Unauthorized Admin Only") {
+    super(message, 401);
+  }
+}
+
 /** 401 UNAUTHORIZED error. */
 
 class UnauthorizedError extends ExpressError {
@@ -50,4 +58,5 @@ module.exports = {
   UnauthorizedError,
   BadRequestError,
   ForbiddenError,
+  UnauthorizedAdmin,
 };
