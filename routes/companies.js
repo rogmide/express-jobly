@@ -51,7 +51,7 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
 
 router.get("/", async function (req, res, next) {
   try {
-    const { name, minEmployees, maxEmployees } = req.query;
+    let { name, minEmployees, maxEmployees } = req.query;
     let min = parseInt(minEmployees);
     let max = parseInt(maxEmployees);
 
@@ -62,6 +62,7 @@ router.get("/", async function (req, res, next) {
     }
 
     if (name || min || max) {
+      name = !name ? "" : name;
       min = !min ? 0 : min;
       max = !max ? 1000000 : max;
       const companies = await Company.findCompaniesByFilters(name, min, max);
