@@ -51,6 +51,13 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
 
 router.get("/", async function (req, res, next) {
   try {
+    // ##################################################
+    // START of FILTER
+    // IF name, minEmployees, maxEmployees, Are in the query string
+    // GET /companies return companies using those filters
+    // all the filter are optionals
+    // No filter return all companies in DB
+
     let { name, minEmployees, maxEmployees } = req.query;
     let min = parseInt(minEmployees);
     let max = parseInt(maxEmployees);
@@ -68,6 +75,8 @@ router.get("/", async function (req, res, next) {
       const companies = await Company.findCompaniesByFilters(name, min, max);
       return res.json({ companies });
     }
+    // END OF FILTER
+    // ##################################################
 
     const companies = await Company.findAll();
     return res.json({ companies });

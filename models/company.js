@@ -62,6 +62,15 @@ class Company {
    * Returns [{ handle, name, description, numEmployees, logoUrl }, ...]
    * */
 
+  /*
+    SQL Query will filter companies using the name or (min and max) employees
+    ## Name, min and max Employees can be "", 0, 1000000
+    ## If name is undefined => name = ""
+    ## If minEmployees is undefined = 0
+    ## If minEmployees is undefined = 1000000
+    This logic is done in the route Get /companies
+  */
+
   static async findCompaniesByFilters(name, minEmployees, maxEmployees) {
     const companiesRes = await db.query(
       `    
