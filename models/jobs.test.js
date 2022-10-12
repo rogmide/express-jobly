@@ -80,38 +80,100 @@ describe("findAll", function () {
       },
     ]);
   });
+});
 
-  describe("get", function () {
-    const jobNew1 = {
-      title: "MP",
-      salary: 200,
-      equity: 0,
-      company_handle: "c1",
-    };
-    test("works", async function () {
-      await Job.create(jobNew1);
-      const results = await db.query(
-        `SELECT id, title, salary, equity, company_handle
+describe("get", function () {
+  const jobNew1 = {
+    title: "MP",
+    salary: 200,
+    equity: 0,
+    company_handle: "c1",
+  };
+  test("works", async function () {
+    await Job.create(jobNew1);
+    const results = await db.query(
+      `SELECT id, title, salary, equity, company_handle
          FROM jobs
          WHERE title = 'MP'`
-      );
+    );
 
-      let job = await Job.get(results.rows[0].id);
-      expect(job).toEqual({
-        id: results.rows[0].id,
-        title: "MP",
-        salary: 200,
-        equity: "0",
-        company_handle: "c1",
-      });
+    let job = await Job.get(results.rows[0].id);
+    expect(job).toEqual({
+      id: results.rows[0].id,
+      title: "MP",
+      salary: 200,
+      equity: "0",
+      company_handle: "c1",
     });
+  });
 
-    test("job not found", async function () {
-      try {
-        let result = await job.get(25235);
-      } catch (error) {
-        expect(error instanceof ReferenceError).toBeTruthy();
-      }
+  test("job not found", async function () {
+    try {
+      let result = await job.get(25235);
+    } catch (error) {
+      expect(error instanceof ReferenceError).toBeTruthy();
+    }
+  });
+});
+
+describe("update", function () {
+  const jobNew1 = {
+    title: "MP",
+    salary: 200,
+    equity: 0,
+    company_handle: "c1",
+  };
+
+  const updateData = {
+    title: "mp2",
+    salary: 100,
+    equity: 0,
+    company_handle: "c1",
+  };
+
+  test("works", async function () {
+    let job = await Job.create(jobNew1);
+    const results = await db.query(
+      `SELECT id, title, salary, equity, company_handle
+         FROM jobs
+         WHERE title = 'MP'`
+    );
+
+    let jobToCheck = await Job.get(results.rows[0].id);
+
+    let job2 = await Job.update(jobToCheck.id, updateData);
+
+    expect(job2).toEqual({
+      id: jobToCheck.id,
+      title: "mp2",
+      salary: 100,
+      equity: "0",
+      company_handle: "c1",
     });
+  });
+});
+
+describe("remove", function () {
+  const newJob = {
+    title: "MP",
+    salary: 200,
+    equity: 0,
+    company_handle: "c1",
+  };
+
+  test("works", async function () {
+    let job = await Job.create(newJob);
+
+    const results = await db.query(
+      `SELECT id, title, salary, equity, company_handle
+         FROM jobs
+         WHERE title = 'MP'`
+    );
+
+    let jobToCheck = await Job.get(results.rows[0].id);
+
+    await Job.remove(jobToCheck.id);
+    const res = await db.query(`SELECT title FROM jobs WHERE id = 1231`);
+    expect(res.rows.length).toEqual(0);
   });
 });

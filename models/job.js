@@ -39,7 +39,6 @@ class Job {
 
     if (!results.rows[0]) throw new NotFoundError(`No job: ${id}`);
 
-
     return results.rows[0];
   }
 
@@ -48,6 +47,7 @@ class Job {
       title: "title",
       salary: "salary",
       equity: "equity",
+      company_handle: "company_handle",
     });
     const id_Idx = "$" + (values.length + 1);
 
