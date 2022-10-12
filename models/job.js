@@ -39,7 +39,25 @@ class Job {
     return results.rows[0];
   }
 
-  static async update(id, data) {}
+  static async update(id, data) {
+    const { setCols, values } = sqlForPartialUpdate(data, {
+      title: "title",
+      salary: "salary",
+      equity: "equity",
+    });
+    const id_Idx = "$" + (values.length + 1);
+
+    const querySql = `UPDATE jobs 
+                        SET ${setCols} 
+                        WHERE id = ${id_Idx} 
+                        RETURNING id, title, salary, equity, company_handle`;
+    const result = await db.query(querySql, [...values, id]);
+    const job = result.rows[0];
+
+    if (!job) throw new NotFoundError(`No Job: ${id}`);
+
+    return job;
+  }
 
   static async remove(id) {}
 }
