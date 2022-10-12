@@ -28,6 +28,18 @@ router.post("/", ensureAdmin, async function (req, res, next) {
 
 router.get("/", async function (req, res, next) {
   try {
+    let { title, salary, equity } = req.query;
+    let sal = parseInt(salary);
+    let equ = parseInt(equity);
+
+    if (title || sal || equ) {
+      title = !title ? "" : title;
+      sal = !sal ? 0 : sal;
+      equ = !equ ? 0 : equ;
+      const job = await Job.findJobsByFilters(title, sal, equ);
+      return res.json({ job });
+    }
+
     const jobs = await Job.findAll();
     return res.json({ jobs });
   } catch (err) {

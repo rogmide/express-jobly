@@ -42,6 +42,22 @@ class Job {
     return results.rows[0];
   }
 
+  static async findJobsByFilters(title, salary, equity) {
+    const companiesRes = await db.query(
+      `    
+      SELECT id, title, salary, equity, company_handle
+      FROM jobs as j
+      where
+      lower( j.title ) LIKE '%${title.toLowerCase()}%'
+      and
+      j.salary > ${salary}
+      and
+      j.equity >= ${equity}
+      ORDER BY j.title`
+    );
+    return companiesRes.rows;
+  }
+
   static async update(id, data) {
     const { setCols, values } = sqlForPartialUpdate(data, {
       title: "title",
