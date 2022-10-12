@@ -36,6 +36,10 @@ class Job {
          where id = $1`,
       [id]
     );
+
+    if (!results.rows[0]) throw new NotFoundError(`No job: ${id}`);
+
+
     return results.rows[0];
   }
 
