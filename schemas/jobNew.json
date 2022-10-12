@@ -6,8 +6,6 @@
     "title": "Root Schema",
     "required": [
         "title",
-        "salary",
-        "equity",
         "company_handle"
     ],
     "properties": {
