@@ -11,7 +11,7 @@ const jobsNewSchema = require("../schemas/jobNew.json");
 
 const router = new express.Router();
 
-router.post("/", async function (req, res, next) {
+router.post("/", ensureAdmin, async function (req, res, next) {
   try {
     const validator = jsonschema.validate(req.body, jobsNewSchema);
     if (!validator.valid) {
@@ -44,7 +44,7 @@ router.get("/:id", async function (req, res, next) {
   }
 });
 
-router.patch("/:id", async function (req, res, next) {
+router.patch("/:id", ensureAdmin, async function (req, res, next) {
   try {
     const validator = jsonschema.validate(req.body, jobsNewSchema);
     if (!validator.valid) {
@@ -59,7 +59,7 @@ router.patch("/:id", async function (req, res, next) {
   }
 });
 
-router.delete("/:id", async function (req, res, next) {
+router.delete("/:id", ensureAdmin, async function (req, res, next) {
   try {
     await Job.remove(req.params.id);
     return res.json({ deleted: req.params.id });
