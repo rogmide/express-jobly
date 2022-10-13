@@ -50,7 +50,7 @@ class Job {
       where
       lower( j.title ) LIKE '%${title.toLowerCase()}%'
       and
-      j.salary > ${salary}
+      j.salary >= ${salary}
       and
       j.equity >= ${equity}
       ORDER BY j.title`
