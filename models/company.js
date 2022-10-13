@@ -50,7 +50,8 @@ class Company {
                   name,
                   description,
                   num_employees AS "numEmployees",
-                  logo_url AS "logoUrl"
+                  logo_url AS "logoUrl",
+                  (SELECT ARRAY_AGG( 'title: ' || jb.title || ', ' || 'Salary: ' || jb.salary || ', ' || 'equity: ' || jb.equity || ', ' || 'company_handle: ' || jb.company_handle ) from jobs as jb where handle = jb.company_handle) AS JOBS
            FROM companies
            ORDER BY name`
     );
@@ -78,7 +79,8 @@ class Company {
              c.name,
              description,
              num_employees AS "numEmployees",
-             logo_url AS "logoUrl"
+             logo_url AS "logoUrl",
+             (SELECT ARRAY_AGG( 'title: ' || jb.title || ', ' || 'Salary: ' || jb.salary || ', ' || 'equity: ' || jb.equity || ', ' || 'company_handle: ' || jb.company_handle ) from jobs as jb where c.handle = jb.company_handle) as jobs
       FROM companies as c
       where
       lower( c.name ) LIKE '%${name.toLowerCase()}%'
