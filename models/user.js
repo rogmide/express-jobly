@@ -106,7 +106,14 @@ class User {
                   first_name AS "firstName",
                   last_name AS "lastName",
                   email,
-                  is_admin AS "isAdmin"
+                  is_admin AS "isAdmin",
+                  (SELECT ARRAY_AGG( 'id: ' || ap.job_id ) 
+                  from applications as ap
+                  join jobs as jb
+                  on jb.id = ap.job_id
+                  join users as us
+                  on us.username = ap.username
+                  where ap.username = users.username) as job_id
            FROM users
            ORDER BY username`
     );
@@ -125,10 +132,18 @@ class User {
   static async get(username) {
     const userRes = await db.query(
       `SELECT username,
-                  first_name AS "firstName",
-                  last_name AS "lastName",
-                  email,
-                  is_admin AS "isAdmin"
+      first_name AS "firstName",
+      last_name AS "lastName",
+      email,
+      is_admin AS "isAdmin",
+      (SELECT ARRAY_AGG( 'id: ' || ap.job_id ) 
+                  from applications as ap
+                  join jobs as jb
+                  on jb.id = ap.job_id
+                  join users as us
+                  on us.username = ap.username
+                  where ap.username = users.username) as job_id
+                  
            FROM users
            WHERE username = $1`,
       [username]
@@ -143,6 +158,7 @@ class User {
   static async create_application(username, id) {
     const res = await db.query(
       `INSERT INTO applications
+          (username, job_id)
           VALUES ($1, $2)
           returning username, job_id;`,
       [username, id]
