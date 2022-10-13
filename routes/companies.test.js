@@ -77,6 +77,7 @@ describe("GET /companies", function () {
           description: "Desc1",
           numEmployees: 1,
           logoUrl: "http://c1.img",
+          jobs: null,
         },
         {
           handle: "c2",
@@ -84,6 +85,7 @@ describe("GET /companies", function () {
           description: "Desc2",
           numEmployees: 2,
           logoUrl: "http://c2.img",
+          jobs: null,
         },
         {
           handle: "c3",
@@ -91,6 +93,7 @@ describe("GET /companies", function () {
           description: "Desc3",
           numEmployees: 3,
           logoUrl: "http://c3.img",
+          jobs: null,
         },
       ],
     });
@@ -123,6 +126,7 @@ describe("GET /companies?Using filters on the query string", function () {
           description: "Desc1",
           numEmployees: 1,
           logoUrl: "http://c1.img",
+          jobs: null,
         },
       ],
     });
@@ -137,6 +141,7 @@ describe("GET /companies?Using filters on the query string", function () {
           description: "Desc1",
           numEmployees: 1,
           logoUrl: "http://c1.img",
+          jobs: null,
         },
       ],
     });
@@ -153,6 +158,7 @@ describe("GET /companies?Using filters on the query string", function () {
           description: "Desc1",
           numEmployees: 1,
           logoUrl: "http://c1.img",
+          jobs: null,
         },
       ],
     });

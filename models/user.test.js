@@ -30,6 +30,8 @@ describe("authenticate", function () {
       lastName: "U1L",
       email: "u1@email.com",
       isAdmin: false,
+      
+
     });
   });
 
@@ -117,6 +119,7 @@ describe("findAll", function () {
         lastName: "U1L",
         email: "u1@email.com",
         isAdmin: false,
+        job_id: null,
       },
       {
         username: "u2",
@@ -124,6 +127,7 @@ describe("findAll", function () {
         lastName: "U2L",
         email: "u2@email.com",
         isAdmin: false,
+        job_id: null,
       },
     ]);
   });
@@ -140,6 +144,7 @@ describe("get", function () {
       lastName: "U1L",
       email: "u1@email.com",
       isAdmin: false,
+      job_id: null,
     });
   });
 
@@ -214,8 +219,7 @@ describe("update", function () {
 describe("remove", function () {
   test("works", async function () {
     await User.remove("u1");
-    const res = await db.query(
-        "SELECT * FROM users WHERE username='u1'");
+    const res = await db.query("SELECT * FROM users WHERE username='u1'");
     expect(res.rows.length).toEqual(0);
   });
 
