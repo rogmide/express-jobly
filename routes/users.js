@@ -5,7 +5,11 @@
 const jsonschema = require("jsonschema");
 
 const express = require("express");
-const { ensureLoggedIn, ensureAdmin, ensureOwnerOrAdmin } = require("../middleware/auth");
+const {
+  ensureLoggedIn,
+  ensureAdmin,
+  ensureOwnerOrAdmin,
+} = require("../middleware/auth");
 const { BadRequestError } = require("../expressError");
 const User = require("../models/user");
 const { createToken } = require("../helpers/tokens");
@@ -65,10 +69,20 @@ router.get("/", ensureAdmin, async function (req, res, next) {
  * Authorization required: login
  **/
 
-router.get("/:username", ensureOwnerOrAdmin,  async function (req, res, next) {
+router.get("/:username", ensureOwnerOrAdmin, async function (req, res, next) {
   try {
     const user = await User.get(req.params.username);
     return res.json({ user });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+router.post("/:username/jobs/:id", async function (req, res, next) {
+  try {
+    const { username, id } = req.params;
+    const application = await User.create_application(username, id);
+    return res.json({ application });
   } catch (err) {
     return next(err);
   }
