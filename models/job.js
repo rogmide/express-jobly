@@ -42,6 +42,7 @@ class Job {
     return results.rows[0];
   }
 
+  // update to check for null
   static async findJobsByFilters(title, salary, equity) {
     const companiesRes = await db.query(
       `    
